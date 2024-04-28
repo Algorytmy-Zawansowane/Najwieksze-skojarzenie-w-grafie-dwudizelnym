@@ -1,1 +1,1 @@
-# Aplikacja
+# Najwieksze skojarzenie w grafie dwudizelnym
