@@ -8,8 +8,17 @@ namespace HungarianAlgorithm
 		double* wages;
 		double sumOfWages;
 		bool findPerfect;
+	public:
+		resultInfo() :G_out{0} {
+			G_out = Graph(0);
+			matchingEdges = nullptr;
+			wages = nullptr;
+			sumOfWages = 0;
+			findPerfect = false;
+		}
 	};
 
 	resultInfo Solve(Graph g);
+
 };
 

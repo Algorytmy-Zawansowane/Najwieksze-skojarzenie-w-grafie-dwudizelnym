@@ -5,9 +5,13 @@
 #include "Graph.h"
 #include "FileController.h"
 #include "HungarianAlgorithm.h"
+#include "Tester.h"
 
 int main(int argc, char* argv[])
 {
+    Tester t;
+    t.Test();
+
     std::cout << "Hello World!\n";
     std::cout << "here is your input:\n";
     for (int i = 1; i < argc; i++) {
@@ -15,7 +19,7 @@ int main(int argc, char* argv[])
 
         Graph g = FileController::ConvertInputFile(argv[i]);
         HungarianAlgorithm::resultInfo result = HungarianAlgorithm::Solve(g);
-        FileController::Save(result.G_out, result.findPerfect, result.sumOfWages, std::string(argv[i]) + "out");
+        FileController::Save(result.G_out, result.findPerfect, result.sumOfWages, std::string(argv[i]) + "out.txt");
     }
 }
 
