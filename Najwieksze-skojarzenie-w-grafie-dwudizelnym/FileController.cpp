@@ -31,9 +31,7 @@ namespace FileController
         std::ofstream file;
         file.open(fileName);
         if (hasBeenSolved)
-            file << "has been solved\n";
-        else
-            file << "not finde solution\n";
+            file << "nie znaleziono doskona³ego\n";
         file << sumOfWages << std::endl;
         file << graphToSave;
 

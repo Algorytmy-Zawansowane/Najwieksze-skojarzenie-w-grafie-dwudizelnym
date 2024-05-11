@@ -1,6 +1,7 @@
 #pragma once
 #include "Graph.h"
 #include "iostream"
+#include "filesystem"
 class Tester {
 public:
 	void Test() {
@@ -10,7 +11,7 @@ public:
 		std::cout << g;
 		g.ModyfiyEdge(0, 0, 1);
 		std::cout << g;
-		FileController::Save(g, true, 10, "C:\\Users\\user\\source\\repos\\Algorytmy Zawansowane\\najwieksze-skojarzenie\\testy\\cos.txt");
+		FileController::Save(g, true, 10, "..\\testy\\cos.txt");
 
 		g.ModyfiyEdge(0, 0, 1);
 		std::cout << g;
@@ -19,7 +20,7 @@ public:
 		std::cout << e;
 
 		std::cout << "test czytania\n";
-		Graph graph_fromFile = FileController::ConvertInputFile("C:\\Users\\user\\source\\repos\\Algorytmy Zawansowane\\najwieksze-skojarzenie\\testy\\kupa.txt");
+		Graph graph_fromFile = FileController::ConvertInputFile("..\\testy\\kupa.txt");
 		std::cout << graph_fromFile;
 	}
 };
