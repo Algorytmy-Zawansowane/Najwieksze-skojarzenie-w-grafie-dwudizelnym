@@ -7,7 +7,7 @@ namespace FileController
         std::ifstream file(fileName);
 
         if (!file.is_open()) {
-            std::cerr << "Nie mo¿na otworzyæ pliku!" << std::endl;
+            std::cerr << "Nie moÂ¿na otworzyÃ¦ pliku!" << std::endl;
             exit(1);
         }
 
@@ -30,8 +30,8 @@ namespace FileController
     {
         std::ofstream file;
         file.open(fileName);
-        if (hasBeenSolved)
-            file << "nie znaleziono doskona³ego\n";
+        if (!hasBeenSolved)
+            file << "nie znaleziono doskonaÂ³ego\n";
         file << sumOfWages << std::endl;
         file << graphToSave;
 
