@@ -17,6 +17,7 @@ struct Edge {
 
 
 	friend std::ostream& operator <<(std::ostream& os, const Edge& g);
+	friend bool operator==(const Edge& a, const Edge& b);
 };
 
 class Graph
@@ -27,16 +28,18 @@ class Graph
 	Edge ***EdgeMatrixRef;
 public:
 	Graph(int size);
+	Graph(const Graph& g);
+
 	void AddEdge(int l, int p, float wage);
-	const std::vector<Edge*> Edges_L(int l);
-	const std::vector<Edge*> Edges_P(int p);
+	const std::vector<Edge*> Edges_L(int l) const;
+	const std::vector<Edge*> Edges_P(int p) const;
 	bool ModyfiyEdge(int l, int p, float w);
-	bool TakeEdge(int l, int p, Edge& Edge);
-	bool HaveEdge(int l, int p);
-	int Size();
+	bool TakeEdge(int l, int p, Edge& Edge) const;
+	bool HaveEdge(int l, int p) const;
+	int Size() const;
 
 	friend std::ostream& operator <<(std::ostream& os, const Graph& g);
-	Graph& operator=(const Graph& g);
+	friend bool operator ==(const Graph& a, const Graph& b);
 
 	~Graph();
 	// zwracanie listy krawêdzi

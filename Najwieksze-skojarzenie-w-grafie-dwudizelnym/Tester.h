@@ -2,6 +2,8 @@
 #include "Graph.h"
 #include "iostream"
 #include "filesystem"
+#include "Matching.h"
+
 class Tester {
 public:
 	void Test() {
@@ -22,5 +24,18 @@ public:
 		std::cout << "test czytania\n";
 		Graph graph_fromFile = FileController::ConvertInputFile("..\\testy\\kupa.txt");
 		std::cout << graph_fromFile;
+	}
+
+	void TestFile(std::string fileName) {
+		Graph graph_fromFile = FileController::ConvertInputFile("..\\testy\\InputTest\\" + fileName);
+		HungarianAlgorithm::Matching m{ graph_fromFile.Size() };
+
+		HungarianAlgorithm::SolveWithoutWages(graph_fromFile, &m);
+		Graph solution = (Graph)m;
+		std::cout << "\nStartowy graf\n" << graph_fromFile << "\n";
+		std::cout << "\nznalezione rozwiazanie\n" <<  solution << std::endl;
+		Graph trueSolution = FileController::ConvertInputFile("..\\testy\\Solutions\\" + fileName);
+		std::cout << "\nprawdziwe rozwiazanie\n" << trueSolution << std::endl;
+		std::cout << "Czy rozwiazanie jest wlasciwe: " << (solution == trueSolution) << std::endl;
 	}
 };

@@ -22,12 +22,12 @@ void Graph::AddEdge(int l, int p, float wage)
 	auto a = *EdgeMatrixRef[l][p];
 }
 
-const std::vector<Edge*> Graph::Edges_L(int l)
+const std::vector<Edge*> Graph::Edges_L(int l) const
 {
 	return L[l];
 }
 
-const std::vector<Edge*> Graph::Edges_P(int p)
+const std::vector<Edge*> Graph::Edges_P(int p) const
 {
 	return P[p];
 }
@@ -40,7 +40,7 @@ bool Graph::ModyfiyEdge(int l, int p, float w)
 	return true;
 }
 
-bool Graph::TakeEdge(int l, int p, Edge& Edge)
+bool Graph::TakeEdge(int l, int p, Edge& Edge) const
 {
 	if (!HaveEdge(l, p))
 		return false;
@@ -48,19 +48,18 @@ bool Graph::TakeEdge(int l, int p, Edge& Edge)
 	return true;
 }
 
-bool Graph::HaveEdge(int l, int p)
+bool Graph::HaveEdge(int l, int p) const
 {
 	return EdgeMatrixRef[l][p] != nullptr;
 }
 
-int Graph::Size()
+int Graph::Size() const
 {
 	return size;
 }
 
-Graph& Graph::operator=(const Graph& g)
+Graph::Graph(const Graph& g)
 {
-	this->~Graph();
 	this->size = g.size;
 	EdgeMatrixRef = new Edge * *[size];
 	for (int i = 0; i < size; i++) {
@@ -94,6 +93,11 @@ std::ostream& operator<<(std::ostream& os, const Edge& e)
 	return os;
 }
 
+bool operator==(const Edge& a, const Edge& b)
+{
+	return a.l == b.l && a.p == b.p && a.wage == b.wage;
+}
+
 std::ostream& operator<<(std::ostream& os, const Graph& g)
 {
 	os << g.size;
@@ -111,4 +115,28 @@ std::ostream& operator<<(std::ostream& os, const Graph& g)
 	}
 
 	return os;
+}
+
+bool operator==(const Graph& a, const Graph& b)
+{
+	if (a.size != b.size)
+		return false;
+
+	const int size = a.size;
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < size; j++) {
+			if (a.EdgeMatrixRef[i][j] != nullptr && b.EdgeMatrixRef[i][j] != nullptr) {
+				if (*a.EdgeMatrixRef[i][j] != *b.EdgeMatrixRef[i][j]) {
+					return false;
+				}
+			}
+			else if (a.EdgeMatrixRef[i][j] != nullptr || b.EdgeMatrixRef[i][j] != nullptr)
+			{
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
