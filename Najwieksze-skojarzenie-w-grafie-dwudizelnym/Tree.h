@@ -25,7 +25,7 @@ namespace HungarianAlgorithm {
 			parents_l[child_l] = parent_p;
 		}
 
-		void Enlarge(Matching* m, const Graph& g, int start, int end) {
+		void Enlarge(Matching& m, const Graph& g, int start, int end) {
 			int current_p = end;
 			int current_l = -1;
 			Edge e;
@@ -33,11 +33,11 @@ namespace HungarianAlgorithm {
 			while (current_l != start)
 			{
 				g.TakeEdge(parents_p[current_p], current_p, e);
-				m->Add(e);
+				m.Add(e);
 				current_l = parents_p[current_p];
 				if (current_l != start) {
 					g.TakeEdge(current_l, parents_l[current_l], e);
-					m->DelateEdge(e);
+					m.DelateEdge(e);
 					current_p = parents_l[current_l];
 				}
 			}

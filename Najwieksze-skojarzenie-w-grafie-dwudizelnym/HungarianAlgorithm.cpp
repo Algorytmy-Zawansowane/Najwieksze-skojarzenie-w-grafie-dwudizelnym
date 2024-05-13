@@ -4,20 +4,20 @@ namespace HungarianAlgorithm{
 	{
 		return resultInfo();
 	}
-	resultInfo SolveWithoutWages(const Graph& g, Matching* matchingEdges)
+	resultInfo SolveWithoutWages(const Graph& g, Matching& matchingEdges)
 	{
-		if (matchingEdges == nullptr) {
-			*matchingEdges = Matching(g.Size());
+		if (matchingEdges.Size() != g.Size()) {
+			matchingEdges = Matching(g.Size());
 		}
 
 		std::stack<int> S, T;
 		while (EnlargePath(g, matchingEdges, S, T)) {
-			if (matchingEdges->NumberOfMatching() >= g.Size()) {
+			if (matchingEdges.NumberOfMatching() >= g.Size()) {
 				resultInfo ri;
 				ri.findPerfect = true;
 				ri.S = S;
 				ri.T = T;
-				ri.M = *matchingEdges;
+				ri.M = matchingEdges;
 				return ri;
 			}
 		}
@@ -26,10 +26,10 @@ namespace HungarianAlgorithm{
 		ri.findPerfect = false;
 		ri.S = S;
 		ri.T = T;
-		ri.M = *matchingEdges;
+		ri.M = matchingEdges;
 		return ri;
 	}
-	bool EnlargePath(const Graph& g, Matching* matchingEdges, std::stack<int>& S, std::stack<int>& T)
+	bool EnlargePath(const Graph& g, Matching& matchingEdges, std::stack<int>& S, std::stack<int>& T)
 	{
 		S = std::stack<int>();
 		T= std::stack<int>();
@@ -38,7 +38,7 @@ namespace HungarianAlgorithm{
 		Tree D{ g.Size() };
 
 		for(int i = 0; i < g.Size(); i++)
-			if (! matchingEdges->IsSaturated_l(i) ) {
+			if (! matchingEdges.IsSaturated_l(i) ) {
 				S.push(i);
 				break;
 			}
@@ -66,19 +66,19 @@ namespace HungarianAlgorithm{
 				T.push(p);
 				containedInT[p] = true;
 				D.AddParrentToNodeFrom_P(l, p);
-				std::cout << *matchingEdges << std::endl;
+				//std::cout << *matchingEdges << std::endl;
 
-				if (!matchingEdges->IsSaturated_p(p)) {
+				if (!matchingEdges.IsSaturated_p(p)) {
 					D.Enlarge(matchingEdges, g ,l, p);
 					return true;
 				}
 				else {
 					Edge e;
-					if (!matchingEdges->Edge_p(p, e))
+					if (!matchingEdges.Edge_p(p, e))
 					{
-						std::cout << "\n\n ERROR \n\n";
+						/*std::cout << "\n\n ERROR \n\n";
 						std::cout << *matchingEdges << std::endl;
-						std::cout << g << std::endl;
+						std::cout << g << std::endl;*/
 						throw "sta³o siê coœ dziwnego";
 					}
 					S.push(e.l);

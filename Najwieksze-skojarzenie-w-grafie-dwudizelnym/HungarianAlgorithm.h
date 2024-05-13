@@ -24,7 +24,7 @@ namespace HungarianAlgorithm
 	
 
 	resultInfo Solve(const Graph& g);
-	resultInfo SolveWithoutWages(const Graph& g, Matching* matchingEdges = nullptr);
-	bool EnlargePath(const Graph& g, Matching* matchingEdges, std::stack<int>& S, std::stack<int>& T);
+	resultInfo SolveWithoutWages(const Graph& g, Matching& matchingEdges);
+	bool EnlargePath(const Graph& g, Matching& matchingEdges, std::stack<int>& S, std::stack<int>& T);
 };
 

@@ -75,6 +75,7 @@ namespace HungarianAlgorithm {
 			sumOfWages -= wages[e.l];
 			wages[e.l] = 0;
 			numberOfMatching--;
+			return true;
 		}
 
 		bool Edge_l(int l, Edge& edge) {

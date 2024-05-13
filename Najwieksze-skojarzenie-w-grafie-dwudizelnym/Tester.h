@@ -30,7 +30,7 @@ public:
 		Graph graph_fromFile = FileController::ConvertInputFile("..\\testy\\InputTest\\" + fileName);
 		HungarianAlgorithm::Matching m{ graph_fromFile.Size() };
 
-		HungarianAlgorithm::SolveWithoutWages(graph_fromFile, &m);
+		HungarianAlgorithm::SolveWithoutWages(graph_fromFile, m);
 		Graph solution = (Graph)m;
 		std::cout << "\nStartowy graf\n" << graph_fromFile << "\n";
 		std::cout << "\nznalezione rozwiazanie\n" <<  solution << std::endl;
