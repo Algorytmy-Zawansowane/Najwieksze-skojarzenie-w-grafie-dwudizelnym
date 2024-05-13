@@ -1,24 +1,30 @@
 #pragma once
 #include "Graph.h"
+#include "stack"
+#include "Matching.h"
+#include "Tree.h"
+
 namespace HungarianAlgorithm
 {
 	struct resultInfo {
 		Graph G_out;
-		int* matchingEdges;
-		double* wages;
-		double sumOfWages;
+		Matching M; 
+		float sumOfWages;
 		bool findPerfect;
+		std::stack<int> S;
+		std::stack<int> T;
+
 	public:
-		resultInfo() :G_out{0} {
-			G_out = Graph(0);
-			matchingEdges = nullptr;
-			wages = nullptr;
-			sumOfWages = 0;
-			findPerfect = false;
-		}
+		resultInfo(const resultInfo& a);
+		resultInfo();
+
+		//resultInfo& operator=(const resultInfo& a);
 	};
 
-	resultInfo Solve(Graph g);
+	
 
+	resultInfo Solve(const Graph& g);
+	resultInfo SolveWithoutWages(const Graph& g, Matching& matchingEdges);
+	bool EnlargePath(const Graph& g, Matching& matchingEdges, std::stack<int>& S, std::stack<int>& T);
 };
 

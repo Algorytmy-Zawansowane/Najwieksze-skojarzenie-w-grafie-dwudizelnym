@@ -14,7 +14,7 @@ namespace FileController
         int n = ReadOne<int>(file);
         Graph g{ n };
         for (int i = 0; i < n; i++) {
-            auto data = ReadLines<std::string>(n, file);
+            auto data = ReadLines<std::string>(1, file);
             int j = 0;
             for (std::string partOfData : data) {
                 if (partOfData != "n") {

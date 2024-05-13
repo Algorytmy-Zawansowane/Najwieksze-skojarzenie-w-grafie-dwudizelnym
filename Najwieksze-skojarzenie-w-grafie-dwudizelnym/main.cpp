@@ -10,7 +10,11 @@
 int main(int argc, char* argv[])
 {
     Tester t;
-    t.Test();
+    //t.Test();
+    t.TestFile("1.txt");
+    t.TestFile("2.txt");
+    t.TestFile("3.txt");
+    t.TestFile("4.txt");
 
     std::cout << "Hello World!\n";
     std::cout << "here is your input:\n";
@@ -19,7 +23,7 @@ int main(int argc, char* argv[])
 
         Graph g = FileController::ConvertInputFile(argv[i]);
         HungarianAlgorithm::resultInfo result = HungarianAlgorithm::Solve(g);
-        FileController::Save(result.G_out, result.findPerfect, result.sumOfWages, std::string(argv[i]) + "out.txt");
+        FileController::Save(result.G_out, result.findPerfect, result.M.SumOfWages(), std::string(argv[i]) + "out.txt");
     }
 }
 
