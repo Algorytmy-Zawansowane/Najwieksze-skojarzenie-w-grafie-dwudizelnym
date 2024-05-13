@@ -46,6 +46,28 @@ namespace HungarianAlgorithm {
 			sumOfWages = 0;
 		}
 
+		Matching& operator=(const Matching& m) {
+			size = m.size;
+			l_p_matching = new int[size];
+			p_l_matching = new int[size];
+			wages = new float[size];
+			for (int i = 0; i < size; i++) {
+				l_p_matching[i] = m.l_p_matching[i];
+				p_l_matching[i] = m.p_l_matching[i];
+				wages[i] = m.wages[i];
+			}
+
+			sumOfWages = m.sumOfWages;
+
+			return *this;
+		}
+
+		~Matching() {
+			delete[] l_p_matching;
+			delete[] p_l_matching;
+			delete[] wages;
+		}
+
 		bool IsSaturated_l(int l) {
 			return l_p_matching[l] >= 0;
 		}
