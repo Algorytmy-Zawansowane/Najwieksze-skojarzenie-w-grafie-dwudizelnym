@@ -18,10 +18,10 @@ struct Edge {
 
 	friend std::ostream& operator <<(std::ostream& os, const Edge& g);
 };
+
 class Graph
 {
 	int size;
-	std::vector<Edge> edges;
 	std::vector<Edge*> *L;
 	std::vector<Edge*> *P;
 	Edge ***EdgeMatrixRef;
@@ -33,7 +33,10 @@ public:
 	bool ModyfiyEdge(int l, int p, float w);
 	bool TakeEdge(int l, int p, Edge& Edge);
 	bool HaveEdge(int l, int p);
+	int Size();
+
 	friend std::ostream& operator <<(std::ostream& os, const Graph& g);
+	Graph& operator=(const Graph& g);
 
 	~Graph();
 	// zwracanie listy krawêdzi

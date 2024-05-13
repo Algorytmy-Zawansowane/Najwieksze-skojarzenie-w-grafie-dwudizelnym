@@ -1,8 +1,7 @@
 #include "Graph.h"
 #include <iostream>
 
-Graph::Graph(int size) {
-	this->size = size;
+Graph::Graph(int size) : size{ size } {
 	L = new std::vector<Edge*>[size];
 	P = new std::vector<Edge*>[size];
 	EdgeMatrixRef = new Edge**[size];
@@ -52,6 +51,29 @@ bool Graph::TakeEdge(int l, int p, Edge& Edge)
 bool Graph::HaveEdge(int l, int p)
 {
 	return EdgeMatrixRef[l][p] != nullptr;
+}
+
+int Graph::Size()
+{
+	return size;
+}
+
+Graph& Graph::operator=(const Graph& g)
+{
+	this->~Graph();
+	this->size = g.size;
+	EdgeMatrixRef = new Edge * *[size];
+	for (int i = 0; i < size; i++) {
+		EdgeMatrixRef[i] = new Edge * [size];
+		for (int j = 0; j < size; j++) {
+			EdgeMatrixRef[i][j] = g.EdgeMatrixRef[i][j];
+			if (EdgeMatrixRef[i][j] != nullptr) {
+				L[i].push_back(EdgeMatrixRef[i][j]);
+				P[i].push_back(EdgeMatrixRef[i][j]);
+
+			}
+		}
+	}
 }
 
 Graph::~Graph()
