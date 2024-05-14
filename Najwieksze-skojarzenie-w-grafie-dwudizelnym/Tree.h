@@ -17,6 +17,11 @@ namespace HungarianAlgorithm {
 			this->size = size;
 		}
 
+		~Tree() {
+			delete[] parents_l;
+			delete[] parents_p;
+		}
+
 		void AddParrentToNodeFrom_P(int parent_l, int child_p) {
 			parents_p[child_p] = parent_l;
 		}
