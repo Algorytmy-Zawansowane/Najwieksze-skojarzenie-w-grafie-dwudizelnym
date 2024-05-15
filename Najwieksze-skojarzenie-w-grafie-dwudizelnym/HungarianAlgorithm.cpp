@@ -14,7 +14,7 @@ namespace HungarianAlgorithm{
 		G.InvertWages();
 		std::vector<float> I(2 * n, 0); // I(l), I(n+p)
 		for (int l = 0; l < n; l++) {
-			I[l] = (*std::max_element(G.Edges_L(l).begin(), G.Edges_L(l).end(), [](Edge* a, Edge* b) {return a->wage < b->wage; }))->wage;
+			I[l] = (*std::max_element(G.Edges_L(l).begin(), G.Edges_L(l).end(), [](const std::shared_ptr<Edge> a, const std::shared_ptr<Edge> b) {return a->wage < b->wage;}))->wage;
 		}
 		Matching M(n);
 

@@ -23,16 +23,14 @@ struct Edge {
 class Graph
 {
 	int size;
-	std::vector<Edge*> *L;
-	std::vector<Edge*> *P;
-	Edge ***EdgeMatrixRef;  // what is this monstrosity o.O
+	std::vector<std::vector<std::shared_ptr<Edge>>> L, P, EdgeMatrixRef;
 public:
 	Graph(int size);
 	Graph(const Graph& g);
 
 	void AddEdge(int l, int p, float wage);
-	const std::vector<Edge*> Edges_L(int l) const;
-	const std::vector<Edge*> Edges_P(int p) const;
+	const std::vector<std::shared_ptr<Edge>>& Edges_L(int l) const;
+	const std::vector<std::shared_ptr<Edge>>& Edges_P(int p) const;
 	bool ModyfiyEdge(int l, int p, float w);
 	bool GetEdge(int l, int p, Edge& Edge) const;
 	bool HasEdge(int l, int p) const;
@@ -42,9 +40,5 @@ public:
 
 	friend std::ostream& operator <<(std::ostream& os, const Graph& g);
 	friend bool operator ==(const Graph& a, const Graph& b);
-
-	~Graph();
-	// zwracanie listy krawêdzi
-	// wierzcho³ki 
 };
 

@@ -5,9 +5,9 @@
 namespace HungarianAlgorithm {
 	class Matching {
 		int graphSize;
-		int* l_p_matching;	// po³¹czenia L - P
-		int* p_l_matching;	// po³¹czenia P - L
-		float* wages;		// wagi po³¹czeñ z L - P
+		std::vector<int> l_p_matching;	// po³¹czenia L - P
+		std::vector<int> p_l_matching;	// po³¹czenia P - L
+		std::vector<float> wages;		// wagi po³¹czeñ z L - P
 		float sumOfWages;
 		int size = 0;
 	public:
@@ -35,36 +35,19 @@ namespace HungarianAlgorithm {
 
 		Matching(int n) {
 			graphSize = n;
-			l_p_matching = new int[graphSize] {-1};
-			p_l_matching = new int[graphSize] {-1};
-			for (int i = 0; i < graphSize; i++) {
-				l_p_matching[i] = p_l_matching[i] = -1;
-			}
-
-			wages = new float[graphSize] {0};
+			l_p_matching = std::vector<int>(graphSize, -1);
+			p_l_matching = std::vector<int>(graphSize, -1);
+			wages = std::vector<float>(graphSize);
 			sumOfWages = 0;
 		}
 
 		Matching& operator=(const Matching& m) {
 			graphSize = m.graphSize;
-			l_p_matching = new int[graphSize];
-			p_l_matching = new int[graphSize];
-			wages = new float[graphSize];
-			for (int i = 0; i < graphSize; i++) {
-				l_p_matching[i] = m.l_p_matching[i];
-				p_l_matching[i] = m.p_l_matching[i];
-				wages[i] = m.wages[i];
-			}
-
+			l_p_matching = m.l_p_matching;
+			p_l_matching = m.p_l_matching;
+			wages = m.wages;
 			sumOfWages = m.sumOfWages;
-
 			return *this;
-		}
-
-		~Matching() {
-			delete[] l_p_matching;
-			delete[] p_l_matching;
-			delete[] wages;
 		}
 
 		bool IsSaturated_l(int l) {

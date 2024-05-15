@@ -2,32 +2,28 @@
 #include <iostream>
 
 Graph::Graph(int size) : size{ size } {
-	L = new std::vector<Edge*>[size];
-	P = new std::vector<Edge*>[size];
-	EdgeMatrixRef = new Edge**[size];
+	L = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>());
+	P = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>());
+	EdgeMatrixRef = std::vector<std::vector<std::shared_ptr<Edge>>>(size);
 	for (int i = 0; i < size; i++) {
-		EdgeMatrixRef[i] = new Edge * [size];
-		for (int j = 0; j < size; j++) {
-			EdgeMatrixRef[i][j] = nullptr;
-		}
+		EdgeMatrixRef[i] = std::vector<std::shared_ptr<Edge>>(size);
 	}
 }
 
 void Graph::AddEdge(int l, int p, float wage)
 {
-	Edge* e = new Edge{l, p, wage};
+	auto e = std::make_shared<Edge>(l, p, wage);
 	L[l].push_back(e);
 	P[p].push_back(e);
 	EdgeMatrixRef[l][p] = e;
-	auto a = *EdgeMatrixRef[l][p];
 }
 
-const std::vector<Edge*> Graph::Edges_L(int l) const
+const std::vector<std::shared_ptr<Edge>>& Graph::Edges_L(int l) const
 {
 	return L[l];
 }
 
-const std::vector<Edge*> Graph::Edges_P(int p) const
+const std::vector<std::shared_ptr<Edge>>& Graph::Edges_P(int p) const
 {
 	return P[p];
 }
@@ -71,36 +67,14 @@ void Graph::InvertWages()
 Graph::Graph(const Graph& g)
 {
 	size = g.size;
-	L = new std::vector<Edge*>[size];
-	P = new std::vector<Edge*>[size];
-	EdgeMatrixRef = new Edge * *[size];
-	for (int i = 0; i < size; i++) {
-		EdgeMatrixRef[i] = new Edge * [size];
-		for (int j = 0; j < size; j++) {
-			EdgeMatrixRef[i][j] = g.EdgeMatrixRef[i][j];
-			if (EdgeMatrixRef[i][j] != nullptr) {
-				L[i].push_back(EdgeMatrixRef[i][j]);
-				P[i].push_back(EdgeMatrixRef[i][j]);
-			}
-		}
-	}
-}
-
-Graph::~Graph()
-{
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
-			if (EdgeMatrixRef[i][j] != nullptr)
-				delete EdgeMatrixRef[i][j];
-		}
-		delete EdgeMatrixRef[i];
-	}
-	delete EdgeMatrixRef;
+	L = g.L;
+	P = g.P;
+	EdgeMatrixRef = g.EdgeMatrixRef;
 }
 
 std::ostream& operator<<(std::ostream& os, const Edge& e)
 {
-	os << "L"<<e.l << "--" << e.wage << "--" << "P"<<e.p;
+	os << "L" << e.l << "--" << e.wage << "--" << "P" << e.p;
 	return os;
 }
 
