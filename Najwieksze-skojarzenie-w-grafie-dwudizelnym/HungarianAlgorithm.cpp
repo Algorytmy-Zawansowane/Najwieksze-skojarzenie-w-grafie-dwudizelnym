@@ -5,20 +5,20 @@ namespace HungarianAlgorithm{
 		return resultInfo();
 	}
 
-	resultInfo SolveWithoutWages(const Graph& g, Matching& matchingEdges)
+	resultInfo SolveWithoutWages(const Graph& g, Matching& matching)
 	{
-		if (matchingEdges.Size() != g.Size()) {
-			matchingEdges = Matching(g.Size());
+		if (matching.GraphSize() != g.Size()) {
+			matching = Matching(g.Size());
 		}
 
 		std::stack<int> S, T;
-		while (EnlargePath(g, matchingEdges, S, T)) {
-			if (matchingEdges.NumberOfMatching() >= g.Size()) {
+		while (EnlargePath(g, matching, S, T)) {
+			if (matching.Size() >= g.Size()) {
 				resultInfo ri;
 				ri.findPerfect = true;
 				ri.S = S;
 				ri.T = T;
-				ri.M = matchingEdges;
+				ri.M = matching;
 				return ri;
 			}
 		}
@@ -27,14 +27,14 @@ namespace HungarianAlgorithm{
 		ri.findPerfect = false;
 		ri.S = S;
 		ri.T = T;
-		ri.M = matchingEdges;
+		ri.M = matching;
 		return ri;
 	}
 
 	bool EnlargePath(const Graph& g, Matching& matchingEdges, std::stack<int>& S, std::stack<int>& T)
 	{
 		S = std::stack<int>();
-		T= std::stack<int>();
+		T = std::stack<int>();
 		bool *l_visited = new bool[g.Size()] {false};
 		bool *containedInT = new bool[g.Size()] {false};
 		Tree D{ g.Size() };

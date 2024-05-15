@@ -4,54 +4,53 @@
 
 namespace HungarianAlgorithm {
 	class Matching {
-		int size;
+		int graphSize;
 		int* l_p_matching; // po³¹czenia L - P
+		int* p_l_matching; // po³¹czenia P - L
 		float* wages;		// wagi po³¹czeñ z L - P
 		float sumOfWages;
-		int numberOfMatching = 0;
-
-		int* p_l_matching; // po³¹czanie P - L
+		int size = 0;
 	public:
 
 		explicit operator Graph() const {
-			Graph result{ size };
-			for (int i = 0; i < size; i++) {
+			Graph result{ graphSize };
+			for (int i = 0; i < graphSize; i++) {
 				if (l_p_matching[i] >= 0)
 					result.AddEdge(i, l_p_matching[i], wages[i]);
 			}
 			return result;
 		}
 
-		float SumOfWages() {
+		float SumOfWages() const {
 			return sumOfWages;
 		}
 
-		int Size() {
+		int GraphSize() const {
+			return graphSize;
+		}
+
+		int Size() const {
 			return size;
 		}
 
-		int NumberOfMatching() {
-			return numberOfMatching;
-		}
-
 		Matching(int n) {
-			size = n;
-			l_p_matching = new int[size] {-1};
-			p_l_matching = new int[size] {-1};
-			for (int i = 0; i < size; i++) {
+			graphSize = n;
+			l_p_matching = new int[graphSize] {-1};
+			p_l_matching = new int[graphSize] {-1};
+			for (int i = 0; i < graphSize; i++) {
 				l_p_matching[i] = p_l_matching[i] = -1;
 			}
 
-			wages = new float[size] {0};
+			wages = new float[graphSize] {0};
 			sumOfWages = 0;
 		}
 
 		Matching& operator=(const Matching& m) {
-			size = m.size;
-			l_p_matching = new int[size];
-			p_l_matching = new int[size];
-			wages = new float[size];
-			for (int i = 0; i < size; i++) {
+			graphSize = m.graphSize;
+			l_p_matching = new int[graphSize];
+			p_l_matching = new int[graphSize];
+			wages = new float[graphSize];
+			for (int i = 0; i < graphSize; i++) {
 				l_p_matching[i] = m.l_p_matching[i];
 				p_l_matching[i] = m.p_l_matching[i];
 				wages[i] = m.wages[i];
@@ -78,7 +77,7 @@ namespace HungarianAlgorithm {
 
 		void Add(Edge e) {
 			if (l_p_matching[e.l] < 0)
-				numberOfMatching++;
+				size++;
 
 			l_p_matching[e.l] = e.p;
 			sumOfWages -= wages[e.l];
@@ -96,7 +95,7 @@ namespace HungarianAlgorithm {
 			p_l_matching[e.p] = -1;
 			sumOfWages -= wages[e.l];
 			wages[e.l] = 0;
-			numberOfMatching--;
+			size--;
 			return true;
 		}
 
@@ -119,7 +118,7 @@ namespace HungarianAlgorithm {
 		}
 
 		friend std::ostream& operator <<(std::ostream& os, const Matching& m) {
-			for (int i = 0; i < m.size; i++) {
+			for (int i = 0; i < m.graphSize; i++) {
 				os << Edge(i, m.l_p_matching[i], m.wages[i]) << std::endl;
 			}
 			return os;
