@@ -18,6 +18,7 @@ namespace HungarianAlgorithm
 	public:
 		resultInfo(const resultInfo& a);
 		resultInfo();
+		void invertWages();
 
 		//resultInfo& operator=(const resultInfo& a);
 	};

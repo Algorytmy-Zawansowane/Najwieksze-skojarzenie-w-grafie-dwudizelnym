@@ -10,11 +10,16 @@
 int main(int argc, char* argv[])
 {
     Tester t;
-    //t.Test();
-    t.TestFile("1.txt");
-    t.TestFile("2.txt");
-    t.TestFile("3.txt");
-    t.TestFile("4.txt");
+    for (int i = 1; i < 4; i++) {
+        try {
+            t.TestFile(std::to_string(i) + ".txt");
+        }
+        catch (std::exception e) {
+            // print to stderr
+            std::cerr << e.what();
+            return -1;
+		}
+	}
 
     std::cout << "Hello World!\n";
     std::cout << "here is your input:\n";

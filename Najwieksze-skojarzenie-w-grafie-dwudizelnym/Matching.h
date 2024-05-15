@@ -106,6 +106,13 @@ namespace HungarianAlgorithm {
 			}
 			return os;
 		}
+
+		void InvertWages() {
+			for (int i = 0; i < graphSize; i++) {
+				wages[i] = -wages[i];
+			}
+			sumOfWages = -sumOfWages;
+		}
 	};
 
 }

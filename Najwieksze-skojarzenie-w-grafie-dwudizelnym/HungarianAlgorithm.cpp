@@ -28,16 +28,9 @@ namespace HungarianAlgorithm{
 					}
 				}
 			}
-			auto ri = SolveWithoutWages(G_I, M);
+			ri = SolveWithoutWages(G_I, M);
 			if (ri.perfectFound) {
-				ri.G_out = std::make_optional<Graph>(n);
-				// add all edges in M
-				for (int l = 0; l < n; l++) {
-					Edge e;
-					if (M.Edge_l(l, e)) {
-						ri.G_out->AddEdge(e.l, e.p, -e.wage);
-					}
-				}
+				ri.invertWages();
 				return ri;
 			}
 			else {
@@ -73,6 +66,7 @@ namespace HungarianAlgorithm{
 			}
 		}
 
+		ri.invertWages();
 		return ri;
 	}
 
@@ -188,5 +182,19 @@ namespace HungarianAlgorithm{
 	resultInfo::resultInfo() : M{ 0 } {
 		perfectFound = false;
 		sumOfWages = 0;
+	}
+	void resultInfo::invertWages()
+	{
+		int n = M.GraphSize();
+		M.InvertWages();
+		sumOfWages = M.SumOfWages();
+		G_out = std::make_optional<Graph>(n);
+		// add all edges in M
+		for (int l = 0; l < n; l++) {
+			Edge e;
+			if (M.Edge_l(l, e)) {
+				G_out->AddEdge(e.l, e.p, e.wage);
+			}
+		}
 	}
 }

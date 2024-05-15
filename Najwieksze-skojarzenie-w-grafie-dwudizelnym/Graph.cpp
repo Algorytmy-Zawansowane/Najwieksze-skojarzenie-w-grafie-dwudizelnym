@@ -4,10 +4,7 @@
 Graph::Graph(int size) : size{ size } {
 	L = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>());
 	P = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>());
-	EdgeMatrixRef = std::vector<std::vector<std::shared_ptr<Edge>>>(size);
-	for (int i = 0; i < size; i++) {
-		EdgeMatrixRef[i] = std::vector<std::shared_ptr<Edge>>(size);
-	}
+	EdgeMatrixRef = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>(size));
 }
 
 void Graph::AddEdge(int l, int p, float wage)
@@ -67,9 +64,14 @@ void Graph::InvertWages()
 Graph::Graph(const Graph& g)
 {
 	size = g.size;
-	L = g.L;
-	P = g.P;
-	EdgeMatrixRef = g.EdgeMatrixRef;
+	L = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>());
+	P = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>());
+	EdgeMatrixRef = std::vector<std::vector<std::shared_ptr<Edge>>>(size, std::vector<std::shared_ptr<Edge>>(size));
+	for (int l = 0; l < size; l++) {
+		for (auto& e : g.Edges_L(l)) {
+			AddEdge(e->l, e->p, e->wage);
+		}
+	}
 }
 
 std::ostream& operator<<(std::ostream& os, const Edge& e)
