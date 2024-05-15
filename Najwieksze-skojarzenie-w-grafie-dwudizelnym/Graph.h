@@ -18,6 +18,7 @@ struct Edge {
 
 	friend std::ostream& operator <<(std::ostream& os, const Edge& g);
 	friend bool operator==(const Edge& a, const Edge& b);
+	friend bool operator!=(const Edge& a, const Edge& b);
 };
 
 class Graph

@@ -59,19 +59,24 @@ namespace HungarianAlgorithm {
 		}
 
 		void Add(Edge e) {
-			if (l_p_matching[e.l] < 0)
-				size++;
+			Edge tmp;
+			Edge_l(e.l, tmp);
+			DelateEdge(tmp);
+			Edge_p(e.p, tmp);
+			DelateEdge(tmp);
+			size++;
 
 			l_p_matching[e.l] = e.p;
+			p_l_matching[e.p] = e.l;
+
 			sumOfWages -= wages[e.l];
 			sumOfWages += e.wage;
-			wages[e.l] = e.wage;
 
-			p_l_matching[e.p] = e.l;
+			wages[e.l] = e.wage;
 		}
 
 		bool DelateEdge(Edge e) {
-			if (l_p_matching[e.l] < 0 || p_l_matching[e.p] < 0)
+			if (e.l < 0 || e.p < 0 || l_p_matching[e.l] < 0 || p_l_matching[e.p] < 0)
 				return false;
 
 			l_p_matching[e.l] = -1;
