@@ -2,7 +2,70 @@
 namespace HungarianAlgorithm{
 	resultInfo HungarianAlgorithm::Solve(const Graph& g)
 	{
-		return resultInfo();
+		int n = g.Size();
+		Matching matching(n);
+		resultInfo ri;
+		ri = SolveWithoutWages(g, matching);
+		if (!ri.perfectFound) {
+			return ri;
+		}
+
+		Graph G(g);		// G = -g
+		G.InvertWages();
+		std::vector<float> I(2 * n, 0); // I(l), I(n+p)
+		for (int l = 0; l < n; l++) {
+			I[l] = (*std::max_element(G.Edges_L(l).begin(), G.Edges_L(l).end(), [](Edge* a, Edge* b) {return a->wage < b->wage; }))->wage;
+		}
+		Matching M(n);
+
+		while (M.Size() < n) {
+			Graph G_I(n);
+			for (int l = 0; l < n; l++) {
+				for (auto edge : G.Edges_L(l)) {
+					int p = edge->p;
+					if (edge->wage == I[l] + I[n + p]) {
+						G_I.AddEdge(l, p, edge->wage);
+					}
+				}
+			}
+			auto ri = SolveWithoutWages(G_I, M);
+			if (ri.perfectFound) {
+				return ri;
+			}
+			else {
+				float q = std::numeric_limits<float>::infinity();
+				// construct the set P-T and convert S, T to vectors
+				std::vector<bool> T_complement(n, true);
+				std::vector<int> T, S;
+				while (!ri.T.empty()) {
+					T_complement[ri.T.top()] = false;
+					T.push_back(ri.T.top());
+					ri.T.pop();
+				}
+				while (!ri.S.empty()) {
+					S.push_back(ri.S.top());
+					ri.S.pop();
+				}
+
+				for (int l : S) {
+					for (auto edge : G.Edges_L(l)) {
+						int p = edge->p;
+						if (T_complement[p]) {
+							q = std::min(q, I[l] + I[n + p] - edge->wage);
+						}
+					}
+				}
+
+				for (int l : S) {
+					I[l] -= q;
+				}
+				for (int p : T) {
+					I[n + p] += q;
+				}
+			}
+		}
+
+		return ri;
 	}
 
 	resultInfo SolveWithoutWages(const Graph& g, Matching& matching)
@@ -15,7 +78,7 @@ namespace HungarianAlgorithm{
 		while (EnlargePath(g, matching, S, T)) {
 			if (matching.Size() == g.Size()) {
 				resultInfo ri;
-				ri.findPerfect = true;
+				ri.perfectFound = true;
 				ri.S = S;
 				ri.T = T;
 				ri.M = matching;
@@ -24,7 +87,7 @@ namespace HungarianAlgorithm{
 		}
 
 		resultInfo ri;
-		ri.findPerfect = false;
+		ri.perfectFound = false;
 		ri.S = S;
 		ri.T = T;
 		ri.M = matching;
@@ -101,15 +164,15 @@ namespace HungarianAlgorithm{
 
 	resultInfo::resultInfo(const resultInfo& a): G_out{ a.G_out }, M{ a.M }
 	{
-		this->findPerfect = a.findPerfect;
-		this->findPerfect = a.findPerfect;
+		this->perfectFound = a.perfectFound;
+		this->perfectFound = a.perfectFound;
 		this->S = a.S;
 		this->T = a.T;
 		this->sumOfWages = a.sumOfWages;
 	}
 
 	resultInfo::resultInfo() :G_out{ 0 }, M{ 0 } {
-		findPerfect = false;
+		perfectFound = false;
 		sumOfWages = 0;
 	}
 }

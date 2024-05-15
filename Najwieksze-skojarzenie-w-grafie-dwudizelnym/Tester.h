@@ -18,7 +18,7 @@ public:
 		g.ModyfiyEdge(0, 0, 1);
 		std::cout << g;
 		Edge e;
-		g.TakeEdge(0, 0, e);
+		g.GetEdge(0, 0, e);
 		std::cout << e;
 
 		std::cout << "test czytania\n";

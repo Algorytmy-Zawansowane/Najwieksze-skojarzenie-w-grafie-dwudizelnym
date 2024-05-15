@@ -37,11 +37,11 @@ namespace HungarianAlgorithm {
 
 			while (current_l != start)
 			{
-				g.TakeEdge(parents_p[current_p], current_p, e);
+				g.GetEdge(parents_p[current_p], current_p, e);
 				m.Add(e);
 				current_l = parents_p[current_p];
 				if (current_l != start) {
-					g.TakeEdge(current_l, parents_l[current_l], e);
+					g.GetEdge(current_l, parents_l[current_l], e);
 					m.DelateEdge(e);
 					current_p = parents_l[current_l];
 				}

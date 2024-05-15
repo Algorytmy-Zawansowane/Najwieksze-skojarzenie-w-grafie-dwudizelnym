@@ -10,7 +10,7 @@ namespace HungarianAlgorithm
 		Graph G_out;
 		Matching M; 
 		float sumOfWages;
-		bool findPerfect;
+		bool perfectFound;
 		std::stack<int> S;
 		std::stack<int> T;
 

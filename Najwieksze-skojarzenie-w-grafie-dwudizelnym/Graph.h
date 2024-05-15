@@ -34,9 +34,11 @@ public:
 	const std::vector<Edge*> Edges_L(int l) const;
 	const std::vector<Edge*> Edges_P(int p) const;
 	bool ModyfiyEdge(int l, int p, float w);
-	bool TakeEdge(int l, int p, Edge& Edge) const;
-	bool HaveEdge(int l, int p) const;
+	bool GetEdge(int l, int p, Edge& Edge) const;
+	bool HasEdge(int l, int p) const;
 	int Size() const;
+
+	void InvertWages();
 
 	friend std::ostream& operator <<(std::ostream& os, const Graph& g);
 	friend bool operator ==(const Graph& a, const Graph& b);

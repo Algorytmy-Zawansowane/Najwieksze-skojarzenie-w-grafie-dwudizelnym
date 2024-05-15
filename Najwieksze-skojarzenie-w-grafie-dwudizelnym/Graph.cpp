@@ -34,21 +34,21 @@ const std::vector<Edge*> Graph::Edges_P(int p) const
 
 bool Graph::ModyfiyEdge(int l, int p, float w)
 {
-	if (!HaveEdge(l, p)) 
+	if (!HasEdge(l, p)) 
 		return false;
 	EdgeMatrixRef[l][p]->wage = w;
 	return true;
 }
 
-bool Graph::TakeEdge(int l, int p, Edge& Edge) const
+bool Graph::GetEdge(int l, int p, Edge& Edge) const
 {
-	if (!HaveEdge(l, p))
+	if (!HasEdge(l, p))
 		return false;
 	Edge = *EdgeMatrixRef[l][p];
 	return true;
 }
 
-bool Graph::HaveEdge(int l, int p) const
+bool Graph::HasEdge(int l, int p) const
 {
 	return EdgeMatrixRef[l][p] != nullptr;
 }
@@ -56,6 +56,16 @@ bool Graph::HaveEdge(int l, int p) const
 int Graph::Size() const
 {
 	return size;
+}
+
+void Graph::InvertWages()
+{
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			if (EdgeMatrixRef[i][j] != nullptr)
+				EdgeMatrixRef[i][j]->wage = -EdgeMatrixRef[i][j]->wage;
+		}
+	}
 }
 
 Graph::Graph(const Graph& g)
