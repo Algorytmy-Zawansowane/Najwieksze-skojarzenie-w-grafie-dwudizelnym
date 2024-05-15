@@ -25,7 +25,7 @@ class Graph
 	int size;
 	std::vector<Edge*> *L;
 	std::vector<Edge*> *P;
-	Edge ***EdgeMatrixRef;
+	Edge ***EdgeMatrixRef;  // what is this monstrosity o.O
 public:
 	Graph(int size);
 	Graph(const Graph& g);

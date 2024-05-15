@@ -60,7 +60,9 @@ int Graph::Size() const
 
 Graph::Graph(const Graph& g)
 {
-	this->size = g.size;
+	size = g.size;
+	L = new std::vector<Edge*>[size];
+	P = new std::vector<Edge*>[size];
 	EdgeMatrixRef = new Edge * *[size];
 	for (int i = 0; i < size; i++) {
 		EdgeMatrixRef[i] = new Edge * [size];
@@ -69,7 +71,6 @@ Graph::Graph(const Graph& g)
 			if (EdgeMatrixRef[i][j] != nullptr) {
 				L[i].push_back(EdgeMatrixRef[i][j]);
 				P[i].push_back(EdgeMatrixRef[i][j]);
-
 			}
 		}
 	}

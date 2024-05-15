@@ -90,7 +90,7 @@ namespace HungarianAlgorithm{
 			}
 		}
 
-		// dodaje spowrotem wierzcho³ki odwiedzionê do stacka 
+		// dodaje z powrotem wierzcho³ki odwiedzionê do stacka 
 		for (int i = 0; i < g.Size(); i++) {
 			if (l_visited[i])
 				S.push(i);
