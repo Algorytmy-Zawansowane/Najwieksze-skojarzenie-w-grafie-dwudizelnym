@@ -30,6 +30,14 @@ namespace HungarianAlgorithm{
 			}
 			auto ri = SolveWithoutWages(G_I, M);
 			if (ri.perfectFound) {
+				ri.G_out = std::make_optional<Graph>(n);
+				// add all edges in M
+				for (int l = 0; l < n; l++) {
+					Edge e;
+					if (M.Edge_l(l, e)) {
+						ri.G_out->AddEdge(e.l, e.p, -e.wage);
+					}
+				}
 				return ri;
 			}
 			else {
@@ -162,16 +170,22 @@ namespace HungarianAlgorithm{
 		return false;
 	}
 
-	resultInfo::resultInfo(const resultInfo& a): G_out{ a.G_out }, M{ a.M }
+	resultInfo::resultInfo(const resultInfo& a): M{ a.M }
 	{
 		this->perfectFound = a.perfectFound;
 		this->perfectFound = a.perfectFound;
 		this->S = a.S;
 		this->T = a.T;
 		this->sumOfWages = a.sumOfWages;
+		if (a.G_out.has_value()) {
+			this->G_out = std::make_optional<Graph>(*a.G_out);
+		}
+		else {
+			this->G_out = std::nullopt;
+		}
 	}
 
-	resultInfo::resultInfo() :G_out{ 0 }, M{ 0 } {
+	resultInfo::resultInfo() : M{ 0 } {
 		perfectFound = false;
 		sumOfWages = 0;
 	}

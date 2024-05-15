@@ -3,11 +3,12 @@
 #include "stack"
 #include "Matching.h"
 #include "Tree.h"
+#include <optional>
 
 namespace HungarianAlgorithm
 {
 	struct resultInfo {
-		Graph G_out;
+		std::optional<Graph> G_out = std::nullopt;
 		Matching M; 
 		float sumOfWages;
 		bool perfectFound;

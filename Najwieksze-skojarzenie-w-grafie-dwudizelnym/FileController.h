@@ -8,7 +8,7 @@
 
 namespace FileController
 {
-	Graph ConvertInputFile(std::string fileName);
+	Graph ConvertInputFile(std::string fileName, bool outputFile = false, int* sumOfWages = nullptr);
 	void Save(const Graph& graphToSave, bool hasBeenSolved, double sumOfWages, std::string fileName);
 
     template<typename T>
