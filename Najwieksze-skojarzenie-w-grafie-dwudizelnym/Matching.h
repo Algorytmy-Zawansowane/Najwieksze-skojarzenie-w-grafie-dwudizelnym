@@ -5,8 +5,8 @@
 namespace HungarianAlgorithm {
 	class Matching {
 		int graphSize;
-		int* l_p_matching; // po³¹czenia L - P
-		int* p_l_matching; // po³¹czenia P - L
+		int* l_p_matching;	// po³¹czenia L - P
+		int* p_l_matching;	// po³¹czenia P - L
 		float* wages;		// wagi po³¹czeñ z L - P
 		float sumOfWages;
 		int size = 0;

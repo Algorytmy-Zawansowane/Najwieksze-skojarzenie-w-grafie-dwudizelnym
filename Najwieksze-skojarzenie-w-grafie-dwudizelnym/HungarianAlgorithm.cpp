@@ -13,7 +13,7 @@ namespace HungarianAlgorithm{
 
 		std::stack<int> S, T;
 		while (EnlargePath(g, matching, S, T)) {
-			if (matching.Size() >= g.Size()) {
+			if (matching.Size() == g.Size()) {
 				resultInfo ri;
 				ri.findPerfect = true;
 				ri.S = S;
