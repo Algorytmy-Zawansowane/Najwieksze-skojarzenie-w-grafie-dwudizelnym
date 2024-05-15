@@ -4,6 +4,7 @@ namespace HungarianAlgorithm{
 	{
 		return resultInfo();
 	}
+
 	resultInfo SolveWithoutWages(const Graph& g, Matching& matchingEdges)
 	{
 		if (matchingEdges.Size() != g.Size()) {
@@ -29,6 +30,7 @@ namespace HungarianAlgorithm{
 		ri.M = matchingEdges;
 		return ri;
 	}
+
 	bool EnlargePath(const Graph& g, Matching& matchingEdges, std::stack<int>& S, std::stack<int>& T)
 	{
 		S = std::stack<int>();
@@ -96,12 +98,14 @@ namespace HungarianAlgorithm{
 
 		return false;
 	}
+
 	resultInfo::resultInfo(const resultInfo& a): G_out{ a.G_out }, M{ a.M }
 	{
 		this->findPerfect = a.findPerfect;
 		this->findPerfect = a.findPerfect;
 		this->S = a.S;
 		this->T = a.T;
+		this->sumOfWages = a.sumOfWages;
 	}
 
 	resultInfo::resultInfo() :G_out{ 0 }, M{ 0 } {
