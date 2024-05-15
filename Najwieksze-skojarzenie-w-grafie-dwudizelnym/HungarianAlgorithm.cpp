@@ -133,7 +133,7 @@ namespace HungarianAlgorithm{
 				T.push(p);
 				containedInT[p] = true;
 				D.AddParrentToNodeFrom_P(l, p);
-				//std::cout << *matchingEdges << std::endl;
+				//std::cout << matchingEdges << std::endl;
 
 				if (!matchingEdges.IsSaturated_p(p)) {
 					D.Enlarge(matchingEdges, g ,l, p);
@@ -160,6 +160,9 @@ namespace HungarianAlgorithm{
 			if (l_visited[i])
 				S.push(i);
 		}
+
+		delete[] l_visited;
+		delete[] containedInT;
 
 		return false;
 	}

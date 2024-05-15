@@ -32,9 +32,7 @@ public:
 		Graph solution = (Graph)ri.M;
 
 		std::cout << "\nStartowy graf\n" << graph_fromFile << "\n";
-		if (!ri.perfectFound) {
-			throw std::exception("Nie znaleziono rozwiazania");
-		}
+		
 		std::cout << "\nZnalezione rozwiazanie\n" <<  solution << std::endl;
 		std::cout << "\nZnaleziona suma wag\n" << ri.sumOfWages << std::endl;
 		int* sumOfWages = new int;
@@ -43,5 +41,9 @@ public:
 		std::cout << "\nPrawdziwa suma wag\n" << *sumOfWages << std::endl;
 		std::cout << "Czy rozwiazanie jest wlasciwe: " << (solution == trueSolution && *sumOfWages == ri.sumOfWages) << std::endl;
 		delete sumOfWages;
+
+		if (!ri.perfectFound) {
+			throw std::exception("Nie znaleziono rozwiazania");
+		}
 	}
 };

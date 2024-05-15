@@ -85,6 +85,11 @@ bool operator==(const Edge& a, const Edge& b)
 	return a.l == b.l && a.p == b.p && a.wage == b.wage;
 }
 
+bool operator!=(const Edge& a, const Edge& b)
+{
+	return !(a == b);
+}
+
 std::ostream& operator<<(std::ostream& os, const Graph& g)
 {
 	os << g.size;
