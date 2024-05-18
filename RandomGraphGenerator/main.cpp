@@ -5,7 +5,7 @@
 #include <sstream>
 
 
-// path, wierzcho³ki, min, max, ziarno = opcjonalnie
+// path, wierzcho³ki, min, max, density = 0.5,  ziarno = opcjonalnie
 int main(int argc, char* argv[])
 {
 	if (argc < 5)
@@ -18,8 +18,14 @@ int main(int argc, char* argv[])
 	int n = std::stoi(argv[2]);
 	float min = std::stof(argv[3]);
 	float max = std::stof(argv[4]);
-	if (argc == 6) {
-		srand(std::stoi(argv[5]));
+	float density = 0.5f;
+	if (argc >= 6)
+	{
+		density = std::stof(argv[5]);
+	}
+
+	if (argc >= 7) {
+		srand(std::stoi(argv[6]));
 	}
 	else
 	{
@@ -36,7 +42,7 @@ int main(int argc, char* argv[])
 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
-			if (rand() % 2 == 0) {
+			if (rand() / (float)RAND_MAX <= density) {
 				g.AddEdge(i, j, (rand() / (float)RAND_MAX) * range + min);
 			}
 		}
