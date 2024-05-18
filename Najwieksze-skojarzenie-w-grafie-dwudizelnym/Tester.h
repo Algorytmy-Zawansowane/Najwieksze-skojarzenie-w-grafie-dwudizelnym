@@ -35,7 +35,7 @@ public:
 		
 		std::cout << "\nZnalezione rozwiazanie\n" <<  solution << std::endl;
 		std::cout << "\nZnaleziona suma wag\n" << ri.sumOfWages << std::endl;
-		int* sumOfWages = new int;
+		float* sumOfWages = new float;
 		Graph trueSolution = FileController::ConvertInputFile("..\\testy\\Solutions\\" + fileName, true, sumOfWages);
 		std::cout << "\nPrawdziwe rozwiazanie\n" << trueSolution << std::endl;
 		std::cout << "\nPrawdziwa suma wag\n" << *sumOfWages << std::endl;

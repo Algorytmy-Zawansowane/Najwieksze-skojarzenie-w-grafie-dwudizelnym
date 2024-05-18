@@ -2,7 +2,7 @@
 
 namespace FileController
 {
-    Graph FileController::ConvertInputFile(std::string fileName, bool outputFile, int* sumOfWages)
+    Graph FileController::ConvertInputFile(std::string fileName, bool outputFile, float* sumOfWages)
     {
         std::ifstream file(fileName);
 
@@ -14,7 +14,7 @@ namespace FileController
         int n = ReadOne<int>(file);
         Graph g{ n };
         if (outputFile) {
-            *sumOfWages = ReadOne<int>(file);
+            *sumOfWages = ReadOne<float>(file);
 		}
         for (int i = 0; i < n; i++) {
             auto data = ReadLines<std::string>(1, file);
@@ -30,7 +30,7 @@ namespace FileController
         return g;
     }
 
-    void FileController::Save(std::optional<Graph> graphToSave, bool hasBeenSolved, double sumOfWages, std::string fileName)
+    void FileController::Save(std::optional<Graph> graphToSave, bool hasBeenSolved, float sumOfWages, std::string fileName)
     {
         std::ofstream file;
         file.open(fileName);
