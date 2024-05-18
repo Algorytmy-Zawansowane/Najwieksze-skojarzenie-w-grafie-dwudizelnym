@@ -92,9 +92,8 @@ bool operator!=(const Edge& a, const Edge& b)
 
 std::ostream& operator<<(std::ostream& os, const Graph& g)
 {
-	os << g.size;
 	for (int i = 0; i < g.size; i++) {
-		os << std::endl;
+		if (i != 0) os << std::endl;
 		for (int j = 0; j < g.size; j++) {
 			if (g.EdgeMatrixRef[i][j] != nullptr)
 			{

@@ -30,14 +30,18 @@ namespace FileController
         return g;
     }
 
-    void FileController::Save(const Graph& graphToSave, bool hasBeenSolved, double sumOfWages, std::string fileName)
+    void FileController::Save(std::optional<Graph> graphToSave, bool hasBeenSolved, double sumOfWages, std::string fileName)
     {
         std::ofstream file;
         file.open(fileName);
         if (!hasBeenSolved)
             file << "nie znaleziono doskona³ego\n";
-        file << sumOfWages << std::endl;
-        file << graphToSave;
+        if (graphToSave.has_value()) {
+            auto& g = graphToSave.value();
+            file << g.Size() << std::endl;
+            file << sumOfWages << std::endl;
+            file << g;
+		}
 
         file.close();
     }

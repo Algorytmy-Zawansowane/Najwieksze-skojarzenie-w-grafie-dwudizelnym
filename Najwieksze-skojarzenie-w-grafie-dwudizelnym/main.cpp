@@ -22,6 +22,6 @@ int main(int argc, char* argv[])
         Graph g = FileController::ConvertInputFile(argv[i]);
         HungarianAlgorithm::resultInfo result = HungarianAlgorithm::Solve(g);
         std::string filePath = std::string(argv[i]);
-        FileController::Save(result.G_out.value(), result.perfectFound, result.M.SumOfWages(), filePath.substr(0, filePath.find_last_of(".")) + "_out.txt");
+        FileController::Save(result.G_out, result.perfectFound, result.M.SumOfWages(), filePath.substr(0, filePath.find_last_of(".")) + "_out.txt");
     }
 }
