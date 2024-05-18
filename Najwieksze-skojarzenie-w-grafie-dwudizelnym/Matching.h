@@ -4,68 +4,50 @@
 
 namespace HungarianAlgorithm {
 	class Matching {
-		int size;
-		int* l_p_matching; // po³¹czenia L - P
-		float* wages;		// wagi po³¹czeñ z L - P
+		int graphSize;
+		std::vector<int> l_p_matching;	// po³¹czenia L - P
+		std::vector<int> p_l_matching;	// po³¹czenia P - L
+		std::vector<float> wages;		// wagi po³¹czeñ z L - P
 		float sumOfWages;
-		int numberOfMatching = 0;
-
-		int* p_l_matching; // po³¹czanie P - L
+		int size = 0;
 	public:
 
 		explicit operator Graph() const {
-			Graph result{ size };
-			for (int i = 0; i < size; i++) {
+			Graph result{ graphSize };
+			for (int i = 0; i < graphSize; i++) {
 				if (l_p_matching[i] >= 0)
 					result.AddEdge(i, l_p_matching[i], wages[i]);
 			}
 			return result;
 		}
 
-		float SumOfWages() {
+		float SumOfWages() const {
 			return sumOfWages;
 		}
 
-		int Size() {
+		int GraphSize() const {
+			return graphSize;
+		}
+
+		int Size() const {
 			return size;
 		}
 
-		int NumberOfMatching() {
-			return numberOfMatching;
-		}
-
 		Matching(int n) {
-			size = n;
-			l_p_matching = new int[size] {-1};
-			p_l_matching = new int[size] {-1};
-			for (int i = 0; i < size; i++) {
-				l_p_matching[i] = p_l_matching[i] = -1;
-			}
-
-			wages = new float[size] {0};
+			graphSize = n;
+			l_p_matching = std::vector<int>(graphSize, -1);
+			p_l_matching = std::vector<int>(graphSize, -1);
+			wages = std::vector<float>(graphSize);
 			sumOfWages = 0;
 		}
 
 		Matching& operator=(const Matching& m) {
-			size = m.size;
-			l_p_matching = new int[size];
-			p_l_matching = new int[size];
-			wages = new float[size];
-			for (int i = 0; i < size; i++) {
-				l_p_matching[i] = m.l_p_matching[i];
-				p_l_matching[i] = m.p_l_matching[i];
-				wages[i] = m.wages[i];
-			}
-
+			graphSize = m.graphSize;
+			l_p_matching = m.l_p_matching;
+			p_l_matching = m.p_l_matching;
+			wages = m.wages;
 			sumOfWages = m.sumOfWages;
-
 			return *this;
-		}
-
-		~Matching() {
-			delete[] l_p_matching;
-			delete[] p_l_matching;
-			delete[] wages;
 		}
 
 		bool IsSaturated_l(int l) {
@@ -77,26 +59,31 @@ namespace HungarianAlgorithm {
 		}
 
 		void Add(Edge e) {
-			if (l_p_matching[e.l] < 0)
-				numberOfMatching++;
+			Edge tmp;
+			Edge_l(e.l, tmp);
+			DelateEdge(tmp);
+			Edge_p(e.p, tmp);
+			DelateEdge(tmp);
+			size++;
 
 			l_p_matching[e.l] = e.p;
+			p_l_matching[e.p] = e.l;
+
 			sumOfWages -= wages[e.l];
 			sumOfWages += e.wage;
-			wages[e.l] = e.wage;
 
-			p_l_matching[e.p] = e.l;
+			wages[e.l] = e.wage;
 		}
 
 		bool DelateEdge(Edge e) {
-			if (l_p_matching[e.l] < 0 || p_l_matching[e.p] < 0)
+			if (e.l < 0 || e.p < 0 || l_p_matching[e.l] < 0 || p_l_matching[e.p] < 0)
 				return false;
 
 			l_p_matching[e.l] = -1;
 			p_l_matching[e.p] = -1;
 			sumOfWages -= wages[e.l];
 			wages[e.l] = 0;
-			numberOfMatching--;
+			size--;
 			return true;
 		}
 
@@ -119,10 +106,17 @@ namespace HungarianAlgorithm {
 		}
 
 		friend std::ostream& operator <<(std::ostream& os, const Matching& m) {
-			for (int i = 0; i < m.size; i++) {
+			for (int i = 0; i < m.graphSize; i++) {
 				os << Edge(i, m.l_p_matching[i], m.wages[i]) << std::endl;
 			}
 			return os;
+		}
+
+		void InvertWages() {
+			for (int i = 0; i < graphSize; i++) {
+				wages[i] = -wages[i];
+			}
+			sumOfWages = -sumOfWages;
 		}
 	};
 

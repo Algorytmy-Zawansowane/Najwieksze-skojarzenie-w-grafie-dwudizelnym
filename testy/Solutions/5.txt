@@ -1,0 +1,7 @@
+5
+86
+n 15 n n n
+n n n 14 n
+21 n n n n
+n n n n 20
+n n 16 n n

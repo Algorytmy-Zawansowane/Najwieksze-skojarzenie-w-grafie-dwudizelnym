@@ -5,11 +5,12 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <optional>
 
 namespace FileController
 {
-	Graph ConvertInputFile(std::string fileName);
-	void Save(const Graph& graphToSave, bool hasBeenSolved, double sumOfWages, std::string fileName);
+	Graph ConvertInputFile(std::string fileName, bool outputFile = false, float* sumOfWages = nullptr);
+	void Save(std::optional<Graph> graphToSave, bool hasBeenSolved, float sumOfWages, std::string fileName);
 
     template<typename T>
     static T ReadOne(std::ifstream& file) {

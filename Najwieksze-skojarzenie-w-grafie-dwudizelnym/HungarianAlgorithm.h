@@ -3,25 +3,25 @@
 #include "stack"
 #include "Matching.h"
 #include "Tree.h"
+#include <optional>
 
 namespace HungarianAlgorithm
 {
 	struct resultInfo {
-		Graph G_out;
+		std::optional<Graph> G_out = std::nullopt;
 		Matching M; 
 		float sumOfWages;
-		bool findPerfect;
+		bool perfectFound;
 		std::stack<int> S;
 		std::stack<int> T;
 
 	public:
 		resultInfo(const resultInfo& a);
 		resultInfo();
+		void invertWages();
 
 		//resultInfo& operator=(const resultInfo& a);
 	};
-
-	
 
 	resultInfo Solve(const Graph& g);
 	resultInfo SolveWithoutWages(const Graph& g, Matching& matchingEdges);

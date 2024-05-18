@@ -18,31 +18,28 @@ struct Edge {
 
 	friend std::ostream& operator <<(std::ostream& os, const Edge& g);
 	friend bool operator==(const Edge& a, const Edge& b);
+	friend bool operator!=(const Edge& a, const Edge& b);
 };
 
 class Graph
 {
 	int size;
-	std::vector<Edge*> *L;
-	std::vector<Edge*> *P;
-	Edge ***EdgeMatrixRef;
+	std::vector<std::vector<std::shared_ptr<Edge>>> L, P, EdgeMatrixRef;
 public:
 	Graph(int size);
 	Graph(const Graph& g);
 
 	void AddEdge(int l, int p, float wage);
-	const std::vector<Edge*> Edges_L(int l) const;
-	const std::vector<Edge*> Edges_P(int p) const;
+	const std::vector<std::shared_ptr<Edge>>& Edges_L(int l) const;
+	const std::vector<std::shared_ptr<Edge>>& Edges_P(int p) const;
 	bool ModyfiyEdge(int l, int p, float w);
-	bool TakeEdge(int l, int p, Edge& Edge) const;
-	bool HaveEdge(int l, int p) const;
+	bool GetEdge(int l, int p, Edge& Edge) const;
+	bool HasEdge(int l, int p) const;
 	int Size() const;
+
+	void InvertWages();
 
 	friend std::ostream& operator <<(std::ostream& os, const Graph& g);
 	friend bool operator ==(const Graph& a, const Graph& b);
-
-	~Graph();
-	// zwracanie listy krawêdzi
-	// wierzcho³ki 
 };
 

@@ -2,37 +2,104 @@
 namespace HungarianAlgorithm{
 	resultInfo HungarianAlgorithm::Solve(const Graph& g)
 	{
-		return resultInfo();
+		int n = g.Size();
+		Matching matching(n);
+		resultInfo ri;
+		ri = SolveWithoutWages(g, matching);
+		if (!ri.perfectFound) {
+			return ri;
+		}
+
+		Graph G(g);		// G = -g
+		G.InvertWages();
+		std::vector<float> I(2 * n, 0); // I(l), I(n+p)
+		for (int l = 0; l < n; l++) {
+			I[l] = (*std::max_element(G.Edges_L(l).begin(), G.Edges_L(l).end(), [](const std::shared_ptr<Edge> a, const std::shared_ptr<Edge> b) {return a->wage < b->wage;}))->wage;
+		}
+		Matching M(n);
+
+		while (M.Size() < n) {
+			Graph G_I(n);
+			for (int l = 0; l < n; l++) {
+				for (auto edge : G.Edges_L(l)) {
+					int p = edge->p;
+					if (edge->wage == I[l] + I[n + p]) {
+						G_I.AddEdge(l, p, edge->wage);
+					}
+				}
+			}
+			ri = SolveWithoutWages(G_I, M);
+			if (ri.perfectFound) {
+				ri.invertWages();
+				return ri;
+			}
+			else {
+				float q = std::numeric_limits<float>::infinity();
+				// construct the set P-T and convert S, T to vectors
+				std::vector<bool> T_complement(n, true);
+				std::vector<int> T, S;
+				while (!ri.T.empty()) {
+					T_complement[ri.T.top()] = false;
+					T.push_back(ri.T.top());
+					ri.T.pop();
+				}
+				while (!ri.S.empty()) {
+					S.push_back(ri.S.top());
+					ri.S.pop();
+				}
+
+				for (int l : S) {
+					for (auto edge : G.Edges_L(l)) {
+						int p = edge->p;
+						if (T_complement[p]) {
+							q = std::min(q, I[l] + I[n + p] - edge->wage);
+						}
+					}
+				}
+
+				for (int l : S) {
+					I[l] -= q;
+				}
+				for (int p : T) {
+					I[n + p] += q;
+				}
+			}
+		}
+
+		ri.invertWages();
+		return ri;
 	}
-	resultInfo SolveWithoutWages(const Graph& g, Matching& matchingEdges)
+
+	resultInfo SolveWithoutWages(const Graph& g, Matching& matching)
 	{
-		if (matchingEdges.Size() != g.Size()) {
-			matchingEdges = Matching(g.Size());
+		if (matching.GraphSize() != g.Size()) {
+			matching = Matching(g.Size());
 		}
 
 		std::stack<int> S, T;
-		while (EnlargePath(g, matchingEdges, S, T)) {
-			if (matchingEdges.NumberOfMatching() >= g.Size()) {
+		while (EnlargePath(g, matching, S, T)) {
+			if (matching.Size() == g.Size()) {
 				resultInfo ri;
-				ri.findPerfect = true;
+				ri.perfectFound = true;
 				ri.S = S;
 				ri.T = T;
-				ri.M = matchingEdges;
+				ri.M = matching;
 				return ri;
 			}
 		}
 
 		resultInfo ri;
-		ri.findPerfect = false;
+		ri.perfectFound = false;
 		ri.S = S;
 		ri.T = T;
-		ri.M = matchingEdges;
+		ri.M = matching;
 		return ri;
 	}
+
 	bool EnlargePath(const Graph& g, Matching& matchingEdges, std::stack<int>& S, std::stack<int>& T)
 	{
 		S = std::stack<int>();
-		T= std::stack<int>();
+		T = std::stack<int>();
 		bool *l_visited = new bool[g.Size()] {false};
 		bool *containedInT = new bool[g.Size()] {false};
 		Tree D{ g.Size() };
@@ -66,7 +133,7 @@ namespace HungarianAlgorithm{
 				T.push(p);
 				containedInT[p] = true;
 				D.AddParrentToNodeFrom_P(l, p);
-				//std::cout << *matchingEdges << std::endl;
+				//std::cout << matchingEdges << std::endl;
 
 				if (!matchingEdges.IsSaturated_p(p)) {
 					D.Enlarge(matchingEdges, g ,l, p);
@@ -88,24 +155,49 @@ namespace HungarianAlgorithm{
 			}
 		}
 
-		// dodaje spowrotem wierzcho³ki odwiedzionê do stacka 
+		// dodaje z powrotem wierzcho³ki odwiedzionê do stacka 
 		for (int i = 0; i < g.Size(); i++) {
 			if (l_visited[i])
 				S.push(i);
 		}
 
+		delete[] l_visited;
+		delete[] containedInT;
+
 		return false;
 	}
-	resultInfo::resultInfo(const resultInfo& a): G_out{ a.G_out }, M{ a.M }
+
+	resultInfo::resultInfo(const resultInfo& a): M{ a.M }
 	{
-		this->findPerfect = a.findPerfect;
-		this->findPerfect = a.findPerfect;
+		this->perfectFound = a.perfectFound;
+		this->perfectFound = a.perfectFound;
 		this->S = a.S;
 		this->T = a.T;
+		this->sumOfWages = a.sumOfWages;
+		if (a.G_out.has_value()) {
+			this->G_out = std::make_optional<Graph>(*a.G_out);
+		}
+		else {
+			this->G_out = std::nullopt;
+		}
 	}
 
-	resultInfo::resultInfo() :G_out{ 0 }, M{ 0 } {
-		findPerfect = false;
+	resultInfo::resultInfo() : M{ 0 } {
+		perfectFound = false;
 		sumOfWages = 0;
+	}
+	void resultInfo::invertWages()
+	{
+		int n = M.GraphSize();
+		M.InvertWages();
+		sumOfWages = M.SumOfWages();
+		G_out = std::make_optional<Graph>(n);
+		// add all edges in M
+		for (int l = 0; l < n; l++) {
+			Edge e;
+			if (M.Edge_l(l, e)) {
+				G_out->AddEdge(e.l, e.p, e.wage);
+			}
+		}
 	}
 }
