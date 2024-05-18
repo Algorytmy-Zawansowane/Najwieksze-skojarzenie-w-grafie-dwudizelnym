@@ -22,7 +22,7 @@ public:
 		std::cout << e;
 
 		std::cout << "test czytania\n";
-		Graph graph_fromFile = FileController::ConvertInputFile("..\\testy\\kupa.txt");
+		Graph graph_fromFile = FileController::ConvertInputFile("..\\testy\\test.txt");
 		std::cout << graph_fromFile;
 	}
 
