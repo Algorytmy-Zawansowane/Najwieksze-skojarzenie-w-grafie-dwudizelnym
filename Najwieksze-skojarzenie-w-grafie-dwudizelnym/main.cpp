@@ -7,7 +7,7 @@
 int main(int argc, char* argv[])
 {
     Tester t;
-    for (int i = 1; i < 4; i++) {
+    for (int i = 1; i <= 6; i++) {
         try {
             t.TestFile(std::to_string(i) + ".txt");
         }
