@@ -48,10 +48,6 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	std::cout << "Wygenerowany graf:\n";
-	std::cout << n << std::endl;
-	std::cout << g << std::endl;
-
 	std::ofstream file(path);
 	file << n << std::endl;
 	file << g;
