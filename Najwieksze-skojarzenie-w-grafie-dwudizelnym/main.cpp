@@ -17,6 +17,8 @@ int main(int argc, char* argv[])
  //           return -1;
 	//	}
 	//}
+   /* Tester t;
+    t.TestFile("errorGraph.txt");*/
 
     for (int i = 1; i < argc; i++) {
         Graph g = FileController::ConvertInputFile(argv[i]);
