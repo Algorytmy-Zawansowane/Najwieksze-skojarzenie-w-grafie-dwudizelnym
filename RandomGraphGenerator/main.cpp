@@ -37,16 +37,22 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	float range = max - min;
+	int range = max - min + 1;
+
 	Graph g{ n };
 
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if (rand() / (float)RAND_MAX <= density) {
-				g.AddEdge(i, j, (rand() / (float)RAND_MAX) * range + min);
+				g.AddEdge(i, j, rand() % range + min);
 			}
 		}
 	}
+
+#ifdef _DEBUG
+	std::cout << g.Size() << std::endl;
+	std::cout << g;
+#endif
 
 	std::ofstream file(path);
 	file << n << std::endl;

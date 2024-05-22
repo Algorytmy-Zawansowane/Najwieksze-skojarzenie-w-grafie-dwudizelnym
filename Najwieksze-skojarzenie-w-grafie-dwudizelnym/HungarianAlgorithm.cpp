@@ -1,4 +1,7 @@
 #include "HungarianAlgorithm.h"
+
+#define EPSILON 0.000001
+
 namespace HungarianAlgorithm{
 	resultInfo HungarianAlgorithm::Solve(const Graph& g)
 	{
@@ -23,7 +26,7 @@ namespace HungarianAlgorithm{
 			for (int l = 0; l < n; l++) {
 				for (auto edge : G.Edges_L(l)) {
 					int p = edge->p;
-					if (edge->wage == I[l] + I[n + p]) {
+					if ( abs( I[l] + I[n + p] - edge->wage ) <= EPSILON) {
 						G_I.AddEdge(l, p, edge->wage);
 					}
 				}
